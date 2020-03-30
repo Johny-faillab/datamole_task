@@ -30,7 +30,7 @@
 - name: Build Docker image from Dockerfile
   docker_image:
     build:
-      path: /home/ubuntu
+      path: /home/ubuntu/datamole
       pull: no
     name: ttyd
     state: present
