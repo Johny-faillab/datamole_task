@@ -1,0 +1,44 @@
+---
+
+- name: Update cache and all packages to the latest version
+  apt:
+    upgrade: dist
+    update_cache: yes
+
+- name: Uprade all packages to the latest version
+  apt:
+    name: '*'
+    state: latest
+
+- name: Remove old versions of Docker
+  apt:
+    name:
+      - docker
+      - docker-engine
+      - docker.io
+    state: absent
+
+- name: Install Docker
+  apt:
+    name:
+      - docker.io
+    state: present
+  notify:
+    - start docker
+    - enable docker
+
+- name: Build Docker image from Dockerfile
+  docker_image:
+    build:
+      path: /home/ubuntu
+      pull: no
+    name: ttyd
+    state: present
+    source: build
+
+- name: Running the container
+  docker_container:
+    image: ttyd
+    state: started
+    name: ttyd
+    ports: 7681:7681
